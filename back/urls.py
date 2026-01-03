@@ -20,7 +20,7 @@ from django.conf import settings
 
 
 urlpatterns = [
-	path('vector/', admin.site.urls),
+	path('milana/', admin.site.urls),
 	path('tinymce/', include('tinymce.urls')),
 	path('_conf/', include('_conf.urls')),
 	path('', include('front.urls')),

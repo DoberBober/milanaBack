@@ -1,6 +1,6 @@
-from front.models import SEO
+from front.models import Front
 
 def common_data(request):
 	return {
-		'seo': SEO.objects.first()
+		'front': Front.objects.first()
 	}

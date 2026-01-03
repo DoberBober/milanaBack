@@ -94,27 +94,27 @@ WSGI_APPLICATION = 'back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': BASE_DIR / 'db.sqlite3',
-	}
-}
-
 # DATABASES = {
 # 	'default': {
-# 		'ENGINE': 'django.db.backends.mysql',   # Backend for connection with Data Base
-# 		'NAME': env.str('DB_NAME'),
-# 		'USER': env.str('DB_USER'),
-# 		'PASSWORD': env.str('DB_PASSWORD'),
-# 		'HOST': env.str('DB_HOST'),
-# 		'OPTIONS': {
-# 			'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-#			'charset': 'utf8mb4',
-#			'use_unicode': True,
-# 		}
+# 		'ENGINE': 'django.db.backends.sqlite3',
+# 		'NAME': BASE_DIR / 'db.sqlite3',
 # 	}
 # }
+
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',   # Backend for connection with Data Base
+		'NAME': env.str('DB_NAME'),
+		'USER': env.str('DB_USER'),
+		'PASSWORD': env.str('DB_PASSWORD'),
+		'HOST': env.str('DB_HOST'),
+		'OPTIONS': {
+			'init_command': "SET sql_mode='STRICT_TRANS_TABLES', collation_connection='utf8mb4_unicode_ci'",
+			'charset': 'utf8mb4',
+			'use_unicode': True,
+		}
+	}
+}
 
 
 # Password validation

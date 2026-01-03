@@ -1,11 +1,11 @@
 from django.contrib import admin
 
-from front.models import SEO
+from front.models import Front
 
 
 # Register your models here.
-@admin.register(SEO)
-class SEOAdmin(admin.ModelAdmin):
+@admin.register(Front)
+class FrontAdmin(admin.ModelAdmin):
 	list_display = ['title',]
 
 	fields = (
@@ -17,6 +17,6 @@ class SEOAdmin(admin.ModelAdmin):
 		return False
 
 	def has_add_permission(self, request, obj=None):
-		if SEO.objects.exists():
+		if Front.objects.exists():
 			return False
 		return True
