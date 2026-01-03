@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block meta %}
+	{% if seo.front_seo_title %}
+		<title>{{ seo.front_seo_title }}</title>
+		<meta name="twitter:title" content="{{ seo.front_seo_title }}">
+		<meta name="og:title" content="{{ seo.front_seo_title }}">
+		{% if seo.front_seo_description %}
+			<meta name="description" content="{{ seo.front_seo_description }}">
+			<meta name="twitter:description" content="{{ seo.front_seo_description }}">
+			<meta name="og:description" content="{{ seo.front_seo_description }}">
+		{% endif %}
+	{% else %}
+		<title>Главная</title>
+		<meta name="twitter:title" content="Главная">
+		<meta name="og:title" content="Главная">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

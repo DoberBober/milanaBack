@@ -1,0 +1,43 @@
+services:
+  django:
+    build:
+      context: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"  # Проброс порта MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql  # Сохраняем данные базы в томе
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    ports:
+      - "2413:80"
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_ARBITRARY: 0
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
+    driver: local

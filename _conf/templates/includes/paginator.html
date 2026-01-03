@@ -1,0 +1,41 @@
+{% load paginator_paramethers %}
+
+{% if is_paginated %}
+	<div class="pagination{% if extra_class %} {{ extra_class }}{% endif %}">
+		{% if page_obj.has_previous %}
+			<div class="pagination__item pagination__item--prev">
+				<a class="pagination__link" href="?{% url_replace request 'page' page_obj.previous_page_number %}">
+					<svg class="pagination__linkIcon" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M18.9999 12L4.99988 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+						<path d="M11.9999 19L4.99988 12L11.9999 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+					</svg>
+					<span>Предыдущая</span>
+				</a>
+			</div>
+		{% endif %}
+
+		{% for n in page_obj.paginator.page_range %}
+			{% if n == page_obj.number %}
+				<div class="pagination__item pagination__item--active">
+					<a class="pagination__link" href="?{% url_replace request 'page' n %}">{{ n }}</a>
+				</div>
+			{% elif n > page_obj.number|add:'-5' and n < page_obj.number|add:'5' %}
+				<div class="pagination__item">
+					<a class="pagination__link" href="?{% url_replace request 'page' n %}">{{ n }}</a>
+				</div>
+			{% endif %}
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+			<div class="pagination__item pagination__item--next">
+				<a class="pagination__link" href="?{% url_replace request 'page' page_obj.next_page_number %}">
+					<span>Следующая</span>
+					<svg class="pagination__linkIcon" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+						<path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+					</svg>
+				</a>
+			</div>
+		{% endif %}
+	</div>
+{% endif %}

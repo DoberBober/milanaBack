@@ -1,0 +1,33 @@
+# Файл с настройками для редактора.
+#
+# Если вы разрабатываете в редакторе WebStorm, BBEdit, Coda или SourceLair
+# этот файл уже поддерживается и не нужно производить никаких дополнительных
+# действий.
+#
+# Если вы ведёте разработку в другом редакторе, зайдите
+# на https://editorconfig.org и в разделе «Download a Plugin»
+# скачайте дополнение для вашего редактора.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = tab
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.pug]
+trim_trailing_whitespace = false
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.js]
+max_line_length = 256
+
+[*.py]
+max_line_length = 256
+indent_size = 4
+indent_style = tab
