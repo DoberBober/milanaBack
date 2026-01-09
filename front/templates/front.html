@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% load static %}
+{% load first_letter %}
 
 {% block meta %}
 	{% if front.front_seo_title %}
@@ -8,9 +9,9 @@
 		<meta name="twitter:title" content="{{ front.front_seo_title }}">
 		<meta name="og:title" content="{{ front.front_seo_title }}">
 	{% else %}
-		<title>Главная</title>
-		<meta name="twitter:title" content="Главная">
-		<meta name="og:title" content="Главная">
+		<title>Врач-гинеколог Ахмедова Милана Ниматулаховна</title>
+		<meta name="twitter:title" content="Врач-гинеколог Ахмедова Милана Ниматулаховна">
+		<meta name="og:title" content="Врач-гинеколог Ахмедова Милана Ниматулаховна">
 	{% endif %}
 
 	{% if front.front_seo_description %}
@@ -20,6 +21,126 @@
 	{% endif %}
 {% endblock %}
 
-{% block content %}
+{% block header %}
+	{% include 'includes/headerShort.html' %}
+{% endblock %}
 
+
+{% block content %}
+<main>
+	<article>
+		<div class="container">
+			<div class="about about--dark about--bigCircle">
+				<div class="container about__container">
+					<img src="{{ front.photo.url }}" alt="">
+					<h1 class="about__heading">Ахмедова Милана Ниматулаховна</h1>
+					<div class="about__desc">гинеколог-хирург, акушер-гинеколог, гинеколог-эндокринолог, кольпоскопист, врач УЗД</div><a class="btn btn--badge about__btn showOrderModal" href="#">Консультация</a>
+				</div>
+			</div>
+		</div>
+
+		{% if services %}
+			<div class="servicesList">
+				<div class="container servicesList__container">
+					<h2 class="blockHeading servicesList__heading">услуги</h2>
+					<div class="servicesList__list">
+						{% for i in services %}
+							<a class="servicesList__item" href="{% url "service" slug=i.slug %}">{{ i.title }}</a>
+						{% endfor %}
+					</div>
+					<a class="btn btn--fullWidth servicesList__btn" href="{% url "services" %}">Все услуги</a>
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="frontAbout">
+			<div class="container frontAbout__container">
+				<h2 class="blockHeading frontAbout__heading">о враче</h2>
+				<div class="frontAbout__text shortBlock">
+					{% autoescape off %}
+						{{ front.about_desc }}
+					{% endautoescape %}
+				</div>
+				{% if front.point_1 or front.point_2 %}
+					<div class="labels frontAbout__labels">
+						<div class="labels__labels">
+							{% if front.point_1 %}
+								<div class="labels__label">
+									{% autoescape off %}
+										{{ front.point_1 }}
+									{% endautoescape %}
+								</div>
+							{% endif %}
+							{% if front.point_1 %}
+								<div class="labels__label">
+									{% autoescape off %}
+										{{ front.point_2 }}
+									{% endautoescape %}
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+				<a class="btn btn--badge frontAbout__btn" href="{% url "about" %}">Подробнее</a>
+			</div>
+		</div>
+
+		{% if diploms %}
+			<div class="container">
+				<div class="certsList certsList--slider" id="licenses">
+					<h2 class="blockHeading certsList__heading">дипломы и сертификаты</h2>
+					<div class="certsList__list">
+						{% for i in diploms %}
+							<div class="certsList__item">
+								<img class="certsList__img" src="{{ i.photo.url }}" alt="{{ i.title }}">
+								{% if i.title %}
+									<div class="certsList__itemTitle">{{ i.title }}</div>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+
+					<a class="btn btn--khaki certsList__btn" href="{% url "about" %}#licenses">смотреть все</a>
+				</div>
+			</div>
+		{% endif %}
+
+		{% if reviews %}
+			<div class="reviewsList reviewsList--slider">
+				<div class="container">
+					<h2 class="blockHeading reviewsList__heading">отзывы</h2>
+					<div class="reviewsList__list">
+						{% for i in reviews %}
+							<div class="reviewsList__item">
+								<div class="reviewsList__itemAvatar">{{ i.title|first_letter }}</div>
+								<div class="reviewsList__itemName">{{ i.title }}</div>
+								<div class="reviewsList__itemRaiting" aria-label="Оценка - 5 звезд">
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358" />
+									</svg>
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358" />
+									</svg>
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358" />
+									</svg>
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358" />
+									</svg>
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358" />
+									</svg>
+								</div>
+								<div class="reviewsList__itemText">
+									<p>{{ i.text }}</p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+					<a class="btn btn--khaki reviewsList__btn" href="{% url "reviews" %}">Смотреть все</a>
+				</div>
+			</div>
+		{% endif %}
+	</article>
+</main>
 {% endblock %}

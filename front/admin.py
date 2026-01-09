@@ -19,6 +19,8 @@ class FrontAdmin(admin.ModelAdmin):
 				('about_seo_title', 'about_seo_description',),
 				('reviews_seo_title', 'reviews_seo_description',),
 				('articles_seo_title', 'articles_seo_description',),
+				('services_seo_title', 'services_seo_description',),
+				('contacts_seo_title', 'contacts_seo_description',),
 			)
 		}),
 		('Контактные данные', {
@@ -35,6 +37,7 @@ class FrontAdmin(admin.ModelAdmin):
 				('front_heading', 'front_desc',),
 				'photo',
 				'about_desc',
+				'about_heading',
 				'about_text',
 				('point_1', 'point_2',),
 			)
@@ -75,11 +78,13 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
 	list_display = ['title',]
+	prepopulated_fields = {'slug': ('title',)}
 
 	fields = (
 		'seo_title',
 		'seo_description',
 		'title',
+		'slug',
 		'text',
 	)
 
@@ -87,12 +92,15 @@ class PageAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
 	list_display = ['title',]
+	prepopulated_fields = {'slug': ('title',)}
+	search_fields = ['title',]
 
 	fields = (
 		('meta_title', 'meta_description',),
 		'created',
 		'type',
 		'title',
+		'slug',
 		'desc',
 		'text',
 		'thumbnail',
@@ -103,7 +111,10 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-	list_display = ['title',]
+	list_display = ['title', 'show_on_front', 'favorite', 'empty', 'parent', 'type',]
+	prepopulated_fields = {'slug': ('title',)}
+	list_editable = ['show_on_front',]
+	search_fields = ['title',]
 
 	fields = (
 		('meta_title', 'meta_description',),
@@ -111,6 +122,8 @@ class ServiceAdmin(admin.ModelAdmin):
 		('show_on_front', 'favorite',),
 		('empty', 'parent',),
 		'title',
+		'slug',
+		'type',
 		'text',
 		'photo',
 	)
@@ -119,6 +132,7 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(Faq)
 class FaqAdmin(admin.ModelAdmin):
 	list_display = ['question',]
+	filter_horizontal = ['services',]
 
 	fields = (
 		'public',

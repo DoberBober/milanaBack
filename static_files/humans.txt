@@ -1,0 +1,15 @@
+/* TEAM */
+
+Backend: Malik
+Site: webbeaver.ru
+Email: pochta.q@bk.ru
+Telegram: @boberdober
+
+Design: Elmira B.
+Email: putpixel@mail.ru
+Telegram: @bekarivsen
+
+Frontend: Malik
+Site: webbeaver.ru
+Email: pochta.q@bk.ru
+Telegram: @boberdober

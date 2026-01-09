@@ -1,0 +1,11 @@
+{% load static %}
+{% load get_phone_link %}
+
+<div class="footerShort">
+	<div class="container footerShort__container">
+		<a class="footerShort__dev" href="{% static "humans.txt" %}">Разработка сайта</a>
+		<div class="footerShort__copyright">
+			<a href="{% url "page" slug="politics" %}">Политика обработки данных.</a> Все&nbsp;права&nbsp;защищены © 2025
+		</div>
+	</div>
+</div>

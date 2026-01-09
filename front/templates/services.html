@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block meta %}
+	{% if front.services_seo_title %}
+		<title>{{ front.services_seo_title }}</title>
+		<meta name="twitter:title" content="{{ front.services_seo_title }}">
+		<meta name="og:title" content="{{ front.services_seo_title }}">
+	{% else %}
+		<title>Услуги</title>
+		<meta name="twitter:title" content="Услуги">
+		<meta name="og:title" content="Услуги">
+	{% endif %}
+
+	{% if front.services_seo_description %}
+		<meta name="description" content="{{ front.services_seo_description }}">
+		<meta name="twitter:description" content="{{ front.services_seo_description }}">
+		<meta name="og:description" content="{{ front.services_seo_description }}">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

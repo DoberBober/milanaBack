@@ -1,0 +1,33 @@
+{% load static %}
+{% comment %} todo {% endcomment %}
+<div class="orderModal">
+	<div class="orderModal__overlay"> </div>
+	<form class="orderModal__form" action="#">
+		<div class="orderModal__header">
+			<div class="orderModal__title">Запись на приём</div>
+			<button class="orderModal__close closeOrderModal" type="button" aria-label="Закрыть">
+				<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M5.41699 5.41663L20.5837 20.5833" stroke="#C3C3C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+					<path d="M20.5837 5.41663L5.41699 20.5833" stroke="#C3C3C3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+			</button>
+		</div>
+		<div class="orderModal__body">
+			<div class="orderModal__inputBlock">
+				<input class="orderModal__input orderModal__input--name" type="text" required name="name" placeholder="Имя">
+			</div>
+			<div class="orderModal__inputBlock">
+				<input class="orderModal__input orderModal__input--phone phoneMask" type="text" required name="tel" placeholder="Телефон для связи">
+			</div>
+			<button class="orderModal__submit" type="submit">Записаться</button>
+			<div class="orderModal__footer">
+				<p>Нажимая на кнопку вы соглашаетесь <a href="{% url "page" slug="politics" %}">с политикой обработки данных</a></p>
+			</div>
+		</div>
+	</form>
+	<div class="orderModal__success">
+		<div class="orderModal__successTitle">Вы записались на приём</div>
+		<div class="orderModal__successText">Наш менеджер свяжется с вами для уточнения даты, времени приёма и других деталей.</div>
+		<button class="orderModal__successClose closeOrderModal" type="button">Хорошо</button>
+	</div>
+</div>

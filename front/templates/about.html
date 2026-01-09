@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block meta %}
+	{% if front.about_seo_title %}
+		<title>{{ front.about_seo_title }}</title>
+		<meta name="twitter:title" content="{{ front.about_seo_title }}">
+		<meta name="og:title" content="{{ front.about_seo_title }}">
+	{% else %}
+		<title>О враче</title>
+		<meta name="twitter:title" content="О враче">
+		<meta name="og:title" content="О враче">
+	{% endif %}
+
+	{% if front.about_seo_description %}
+		<meta name="description" content="{{ front.about_seo_description }}">
+		<meta name="twitter:description" content="{{ front.about_seo_description }}">
+		<meta name="og:description" content="{{ front.about_seo_description }}">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<main>
+	<article class="aboutPG">
+		<div class="container">
+			<div class="about">
+				<div class="container about__container">
+					<img src="{{ front.photo.url }}" alt="">
+					<div class="about__heading">Ахмедова Милана Ниматулаховна</div>
+					<div class="about__desc">гинеколог-хирург, акушер-гинеколог, гинеколог-эндокринолог, кольпоскопист,&nbsp;врач УЗД</div>
+					{% if front.point_1 or front.point_2 %}
+						<div class="labels about__labels">
+							<div class="labels__labels">
+								{% if front.point_1 %}
+									<div class="labels__label">
+										{% autoescape off %}
+											{{ front.point_1 }}
+										{% endautoescape %}
+									</div>
+								{% endif %}
+								{% if front.point_2 %}
+									<div class="labels__label">
+										{% autoescape off %}
+											{{ front.point_2 }}
+										{% endautoescape %}
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="article articlePG__article">
+			<div class="container article__container">
+				{% if front.about_heading %}
+					<h1 class="article__title shortBlock">{{ front.about_heading }}</h1>
+				{% endif %}
+				<div class="article__text shortBlock">
+					{% autoescape off %}
+						{{ front.about_text }}
+					{% endautoescape %}
+				</div>
+			</div>
+		</div>
+
+		{% if diploms %}
+		<div class="container">
+			<div class="certsList certsList--brownHeading" id="licenses">
+				<h2 class="blockHeading certsList__heading">дипломы и&nbsp;сертификаты</h2>
+				<div class="certsList__list">
+					{% for i in diploms %}
+						<div class="certsList__item">
+							<img loading="lazy" class="certsList__img" src="{{ i.photo.url }}" alt="{{ i.title }}">
+							{% if i.title %}
+								<div class="certsList__itemTitle">{{ i.title }}</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
+		<div class="container">
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyMobile" href="#">Записаться на консультацию</a>
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyDesktop" href="#">Запись</a>
+		</div>
+	</article>
+</main>
+{% endblock %}

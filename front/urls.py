@@ -1,6 +1,16 @@
 from django.urls import path
-from front.views import FrontView
+
+from front.views import FrontView, AboutView, ContactsView, ReviewsView, ServicesView, ServiceView, ArticlesView, ArticleView, PageView
+
 
 urlpatterns = [
 	path('', FrontView.as_view(), name="front"),
+	path('about/', AboutView.as_view(), name="about"),
+	path('contacts/', ContactsView.as_view(), name="contacts"),
+	path('reviews/', ReviewsView.as_view(), name="reviews"),
+	path('services/', ServicesView.as_view(), name="services"),
+	path('services/<str:slug>/', ServiceView.as_view(), name="service"),
+	path('articles/', ArticlesView.as_view(), name="articles"),
+	path('articles/<str:slug>/', ArticleView.as_view(), name="article"),
+	path('<str:slug>/', PageView.as_view(), name="page"),
 ]

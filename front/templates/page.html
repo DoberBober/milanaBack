@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block meta %}
+	{% if page.seo_title %}
+		<title>{{ page.seo_title }}</title>
+		<meta name="twitter:title" content="{{ page.seo_title }}">
+		<meta name="og:title" content="{{ page.seo_title }}">
+	{% else %}
+		<title>{{ page.title }}</title>
+		<meta name="twitter:title" content="{{ page.title }}">
+		<meta name="og:title" content="{{ page.title }}">
+	{% endif %}
+
+	{% if page.seo_description %}
+		<meta name="description" content="{{ page.seo_description }}">
+		<meta name="twitter:description" content="{{ page.seo_description }}">
+		<meta name="og:description" content="{{ page.seo_description }}">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<main>
+	<article class="articlePG">
+		<div class="article articlePG__article">
+			<div class="container article__container">
+				<h1 class="article__title shortBlock">{{ page.title }}</h1>
+				<div class="article__text shortBlock">
+					{% autoescape off %}
+						{{ page.text }}
+					{% endautoescape %}
+				</div>
+			</div>
+		</div>
+	</article>
+</main>
+{% endblock %}

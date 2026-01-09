@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block meta %}
+	{% if service.meta_title %}
+		<title>{{ service.meta_title }}</title>
+		<meta name="twitter:title" content="{{ service.meta_title }}">
+		<meta name="og:title" content="{{ service.meta_title }}">
+	{% else %}
+		<title>{{ service.title }}</title>
+		<meta name="twitter:title" content="{{ service.title }}">
+		<meta name="og:title" content="{{ service.title }}">
+	{% endif %}
+
+	{% if service.meta_description %}
+		<meta name="description" content="{{ service.meta_description }}">
+		<meta name="twitter:description" content="{{ service.meta_description }}">
+		<meta name="og:description" content="{{ service.meta_description }}">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

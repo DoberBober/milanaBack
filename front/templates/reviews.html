@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% load static %}
+{% load first_letter %}
+
+{% block meta %}
+	{% if front.reviews_seo_title %}
+		<title>{{ front.reviews_seo_title }}</title>
+		<meta name="twitter:title" content="{{ front.reviews_seo_title }}">
+		<meta name="og:title" content="{{ front.reviews_seo_title }}">
+	{% else %}
+		<title>Отзывы</title>
+		<meta name="twitter:title" content="Отзывы">
+		<meta name="og:title" content="Отзывы">
+	{% endif %}
+
+	{% if front.reviews_seo_description %}
+		<meta name="description" content="{{ front.reviews_seo_description }}">
+		<meta name="twitter:description" content="{{ front.reviews_seo_description }}">
+		<meta name="og:description" content="{{ front.reviews_seo_description }}">
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<main>
+	<article class="reviewsPG">
+		<div class="container reviewsPG__container">
+			<h1 class="pageH1 reviewsPG__h1">отзывы</h1>
+		</div>
+		<div class="reviewsList reviewsPG__reviews">
+			<div class="container">
+				<div class="reviewsList__list">
+					{% for i in reviews %}
+						<div class="reviewsList__item">
+							<div class="reviewsList__itemAvatar">{{ i.title|first_letter }}</div>
+							<div class="reviewsList__itemName">{{ i.title }}</div>
+							<div class="reviewsList__itemRaiting" aria-label="Оценка - 5 звезд">
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358"></path>
+								</svg>
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358"></path>
+								</svg>
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358"></path>
+								</svg>
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358"></path>
+								</svg>
+								<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M15 19.9083L9.54281 22.5005L10.6762 16.763L6.5625 12.5555L12.3553 11.8327L15 6.56299L17.6447 11.8327L23.4375 12.5555L19.3238 16.763L20.4572 22.5005L15 19.9083Z" fill="#DEB358"></path>
+								</svg>
+							</div>
+							<div class="reviewsList__itemText">
+								<p>{{ i.text }}</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="container reviewsPG__container">
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyMobile" href="#">Записаться на консультацию</a>
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyDesktop" href="#">Запись</a>
+		</div>
+	</article>
+</main>
+{% endblock %}

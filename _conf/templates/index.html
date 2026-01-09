@@ -31,14 +31,28 @@
 		<link rel="manifest" href="{% static 'favicons/site.webmanifest' %}" />
 	</head>
 	<body>
-		{% include 'includes/header.html' %}
+		{% block header %}
+			{% include 'includes/header.html' %}
+		{% endblock %}
 
 		{% block content %}
 			<main>
 			</main>
 		{% endblock %}
 
-		{% include 'includes/footer.html' %}
+		{% block footer %}
+			{% include 'includes/footer.html' %}
+		{% endblock %}
+
+		{% include 'includes/orderModal.html' %}
+
+		<button class="floatMenuBtn onlyMobile" type="button" aria-label="Открыть меню">
+			<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M8.24658 18H27.7542" stroke="white" stroke-width="3" stroke-linecap="square" stroke-linejoin="round" />
+				<path d="M8.24707 27.0025H27.7547" stroke="white" stroke-width="3" stroke-linecap="square" stroke-linejoin="round" />
+				<path d="M8.24561 8.9975H27.7532" stroke="white" stroke-width="3" stroke-linecap="square" stroke-linejoin="round" />
+			</svg>
+		</button>
 
 		<link href="{% static_hash 'css/plugins.css' %}" rel="stylesheet" />
 		<script src="{% static_hash 'js/plugins.js' %}"></script>
