@@ -1,7 +1,7 @@
 from django.urls import path
 
 from front.views import FrontView, AboutView, ContactsView, ReviewsView, ServicesView, ServiceView, ArticlesView, ArticleView, PageView
-
+from front.views import create_order
 
 urlpatterns = [
 	path('', FrontView.as_view(), name="front"),
@@ -13,4 +13,6 @@ urlpatterns = [
 	path('articles/', ArticlesView.as_view(), name="articles"),
 	path('articles/<str:slug>/', ArticleView.as_view(), name="article"),
 	path('<str:slug>/', PageView.as_view(), name="page"),
+	path("orders/create/", create_order, name="create_order"),
+
 ]

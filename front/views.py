@@ -4,9 +4,11 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.http import urlencode
+from django.views.decorators.http import require_POST
+
 
 from front.models import Front, Diplom, Review, Page, Post, Service, Faq, Order
-
+from _conf.utils import mail_sender
 
 class FrontView(TemplateView):
 	template_name = 'front.html'
@@ -156,3 +158,35 @@ class ServiceView(DetailView):
 		context = super().get_context_data(*args, **kwargs)
 		context['other'] = Service.objects.filter(show_on_front=True).order_by('?')[:6]
 		return context
+
+
+@require_POST
+def create_order(request):
+	name = (request.POST.get("name") or "").strip()
+	phone = (request.POST.get("tel") or "").strip()
+	page_url = (request.POST.get("url") or "").strip()
+
+	if not page_url:
+		page_url = request.META.get("HTTP_REFERER", "")
+
+	if not name or not phone:
+		return JsonResponse({"ok": 0, "error": "name/phone required"}, status=400)
+
+	order = Order.objects.create(
+		url=page_url,
+		name=name,
+		phone=phone,
+	)
+
+	subject = f"Новая запись на приём (Order #{order.id})"
+	message = (
+		f"Создана новая запись:\n\n"
+		f"ID: {order.id}\n"
+		f"Имя: {order.name}\n"
+		f"Телефон: {order.phone}\n"
+		f"URL: {order.url}\n"
+	)
+
+	mail_sender(subject, message)
+
+	return JsonResponse({"ok": 1})

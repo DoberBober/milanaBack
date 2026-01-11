@@ -1,8 +1,10 @@
 {% load static %}
-{% comment %} todo {% endcomment %}
 <div class="orderModal">
-	<div class="orderModal__overlay"> </div>
-	<form class="orderModal__form" action="#">
+	<div class="orderModal__overlay"></div>
+	<form class="orderModal__form" action="{% url "create_order" %}">
+		{% csrf_token %}
+		<input type="hidden" name="url" value="{{ request.build_absolute_uri }}">
+
 		<div class="orderModal__header">
 			<div class="orderModal__title">Запись на приём</div>
 			<button class="orderModal__close closeOrderModal" type="button" aria-label="Закрыть">
