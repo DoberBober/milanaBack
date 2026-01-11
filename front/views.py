@@ -28,8 +28,8 @@ class ArticlesView(TemplateView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		context['articles'] = Post.objects.filter(type=Post.TYPES.article)
-		context['videos'] = Post.objects.filter(type=Post.TYPES.video)
+		context['articles'] = Post.pub_objects.filter(type=Post.Type.ARTICLE)
+		context['videos'] = Post.pub_objects.filter(type=Post.Type.VIDEO)
 		return context
 
 
@@ -40,8 +40,7 @@ class ArticleView(DetailView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		# TODO.
-		context['other'] = Post.objects.filter(type=Post.TYPES.article)
+		context['other'] = Post.pub_objects.filter(type=self.object.type).order_by('?')[:6]
 		return context
 
 
@@ -72,7 +71,11 @@ class ServiceView(DetailView):
 	model = Service
 	context_object_name = 'service'
 
+	def get_queryset(self):
+		qs = super().get_queryset()
+		return qs.filter(empty=False)
+
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		context['other'] = Service.objects.all().order_by('?')[:6]
+		context['other'] = Service.objects.filter(show_on_front=True).order_by('?')[:6]
 		return context

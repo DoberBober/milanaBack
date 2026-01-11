@@ -91,13 +91,14 @@ class PageAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-	list_display = ['title',]
+	list_display = ['title', 'type', 'public',]
 	prepopulated_fields = {'slug': ('title',)}
 	search_fields = ['title',]
+	list_filter = ['type',]
 
 	fields = (
 		('meta_title', 'meta_description',),
-		'created',
+		('created', 'public',),
 		'type',
 		'title',
 		'slug',
@@ -118,7 +119,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 	fields = (
 		('meta_title', 'meta_description',),
-		'created',
+		('created', 'public',),
 		('show_on_front', 'favorite',),
 		('empty', 'parent',),
 		'title',
@@ -131,7 +132,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Faq)
 class FaqAdmin(admin.ModelAdmin):
-	list_display = ['question',]
+	list_display = ['question', 'services_list',]
 	filter_horizontal = ['services',]
 
 	fields = (
@@ -140,6 +141,10 @@ class FaqAdmin(admin.ModelAdmin):
 		'question',
 		'answer',
 	)
+
+	@admin.display(description="Услуги")
+	def services_list(self, obj):
+		return ", ".join(obj.services.values_list("title", flat=True))
 
 
 @admin.register(Order)

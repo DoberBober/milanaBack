@@ -104,12 +104,18 @@ class Page(models.Model):
 
 
 class Post(BaseModel):
-	TYPES = (
-		("article", "Статья"),
-		("video", "Видео"),
-	)
+	class Type(models.TextChoices):
+		ARTICLE = "article", "Статья"
+		VIDEO = "video", "Видео"
 
-	type = models.CharField(max_length=128, verbose_name='Тип поста', choices=TYPES, default=TYPES[0])
+
+	type = models.CharField(
+		"Тип поста",
+		max_length=16,
+		choices=Type.choices,
+		default=Type.ARTICLE,
+		db_index=True,
+	)
 	title = models.CharField(blank=False, max_length=256, verbose_name='Название')
 	slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')
 	desc = models.TextField(blank=True, verbose_name='Вводный текст')
@@ -129,17 +135,23 @@ class Post(BaseModel):
 
 
 class Service(BaseModel):
-	TYPES = (
-		("service", "Услуга"),
-		("operation", "Операция"),
-	)
+	class Type(models.TextChoices):
+		SERVICE = "service", "Услуга"
+		OPERATION = "operation", "Операция"
+
 
 	show_on_front = models.BooleanField(default=True, verbose_name='Отображать на главной')
 	empty = models.BooleanField(default=False, verbose_name='Не открывать страницу')
 	favorite = models.BooleanField(default=False, verbose_name='Выделить на странице услуг')
 
 	parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='childs', verbose_name='Родительская услуга')
-	type = models.CharField(max_length=128, verbose_name='Тип поста', choices=TYPES, default=TYPES[0])
+	type = models.CharField(
+		"Тип услуги",
+		max_length=16,
+		choices=Type.choices,
+		default=Type.SERVICE,
+		db_index=True,
+	)
 
 	title = models.CharField(blank=False, max_length=256, verbose_name='Название')
 	slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')

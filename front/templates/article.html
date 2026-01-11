@@ -21,5 +21,71 @@
 {% endblock %}
 
 {% block content %}
+<main>
+	<article class="articlePG">
+		<div class="article articlePG__article">
+			<div class="container article__container">
+				{% if post.type == 'article' %}
+					<a class="article__back" href="{% url "articles" %}">все статьи</a>
+				{% else %}
+					<a class="article__back" href="{% url "articles" %}">все подкасты</a>
+				{% endif %}
 
+				<h1 class="article__title shortBlock">{{ post.title }}</h1>
+
+				<div class="article__date">{{ post.created }}</div>
+				{% if post.photo and post.photo.url %}
+					<img class="article__img" src="{{ post.photo.url }}" alt="{{ post.title }}">
+				{% elif post.video %}
+					<div class="article__img">
+						{% autoescape off %}
+							{{ post.video }}
+						{% endautoescape %}
+					</div>
+				{% endif %}
+
+				{% if post.text %}
+					<div class="article__text shortBlock">
+						{% autoescape off %}
+							{{ post.text }}
+						{% endautoescape %}
+					</div>
+				{% endif %}
+
+				<a class="btn btn--khaki btn--fullWidth article__btn showOrderModal" href="#">Записаться на консультацию</a>
+			</div>
+		</div>
+
+		{% if other %}
+			<div class="container articlePG__container">
+				<div class="articlePG__other">
+					<div class="articlesList articlesList--sliderOnMobile">
+						{% if post.type == 'article' %}
+							<div class="blockHeading articlesList__heading">другие статьи</div>
+						{% else %}
+							<div class="blockHeading articlesList__heading">другие подкасты</div>
+						{% endif %}
+
+						<div class="articlesList__list">
+							{% for i in other %}
+								<div class="articlesList__item {% if post.type == 'video' %} articlesList__item--video{% endif %}">
+									<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
+										<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+									</a>
+									<div class="articlesList__itemTitle">
+										<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
+									</div>
+									{% if i.desc %}
+										<div class="articlesList__desc">{{ i.desc }}</div>
+									{% endif %}
+									<div class="articlesList__date">{{ i.created }}</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</article>
+</main>
 {% endblock %}

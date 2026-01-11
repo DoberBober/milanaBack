@@ -21,5 +21,62 @@
 {% endblock %}
 
 {% block content %}
+<main>
+	<article class="articlePG">
+		<div class="article articlePG__article">
+			<div class="container article__container">
+				<a class="article__back" href="{% url "services" %}">все услуги</a>
+				<h1 class="article__title shortBlock">{{ service.title }}</h1>
+				<div class="article__date">{{ service.created }}</div>
+				{% if service.photo and service.photo.url %}
+					<img class="article__img" src="{{ service.photo.url }}" alt="{{ service.title }}">
+				{% endif %}
 
+				<div class="article__text shortBlock">
+					{% autoescape off %}
+						{{ service.text }}
+					{% endautoescape %}
+				</div>
+				<a class="btn btn--khaki btn--fullWidth article__btn showOrderModal" href="#">Записаться на консультацию</a>
+			</div>
+		</div>
+
+		{% if other %}
+			<div class="articlePG__other">
+				<div class="servicesList">
+					<div class="container servicesList__container">
+						<div class="blockHeading servicesList__heading">популярные услуги</div>
+						<div class="servicesList__list">
+							{% for i in other %}
+								<a class="servicesList__item" href="{% url "service" slug=i.slug %}">{{ i.title }}</a>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+		{% if service.faq.all %}
+			<div class="container articlePG__container">
+				<div class="articlePG__question">
+					<div class="faqList shortBlock">
+						<div class="blockHeading faqList__heading">вопросы-ответы</div>
+						<div class="faqList__list">
+							{% for i in service.faq.all %}
+								<div class="faqList__item">
+									<button class="faqList__itemQuestion" type="button">{{ i.question }}</button>
+									<div class="faqList__itemAnswer">
+										{% autoescape off %}
+											{{ i.answer }}
+										{% endautoescape %}
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</article>
+</main>
 {% endblock %}

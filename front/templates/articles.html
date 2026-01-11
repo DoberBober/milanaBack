@@ -21,5 +21,89 @@
 {% endblock %}
 
 {% block content %}
+<main>
+	<article class="articlesPG">
+		<div class="container articlesPG__container">
+			<h1 class="visually-hidden">Статьи и подкасты</h1>
+			<div class="articlesPG__tabs onlyMobile">
+				<button class="articlesPG__tab articlesPG__tab--badge articlesPG__tab--active" type="button" data-target="статьи">статьи</button>
+				{% if videos %}
+					<button class="articlesPG__tab articlesPG__tab--khaki" type="button" data-target="подкасты">подкасты</button>
+				{% endif %}
+			</div>
+			<div class="articlesPG__block articlesPG__block--visibleOnMobile" data-target="статьи">
+				<h2 class="articlesPG__blockHeading onlyDesktop">Статьи</h2>
+				<div class="search articlesPG__search">
+					<form class="search__form" action="#">
+						<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
+						<button class="search__submit" type="submit" aria-label="Найти"></button>
+					</form>
+				</div>
+				<div class="articlesList">
+					<div class="articlesList__list">
+						{% for i in articles %}
+							<div class="articlesList__item">
+								<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
+									<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+								</a>
+								<div class="articlesList__itemTitle">
+									<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
+								</div>
+								{% if i.desc %}
+									<div class="articlesList__desc">{{ i.desc }}</div>
+								{% endif %}
+								<div class="articlesList__date">{{ i.created }}</div>
+							</div>
+						{% endfor %}
+					</div>
+					<a class="btn btn--beige btn--fullWidth articlesList__more" href="#">Загрузить ещё</a>
+				</div>
+			</div>
 
+			{% if videos %}
+				<div class="articlesPG__block articlesPG__block--khaki" data-target="подкасты">
+					<h2 class="articlesPG__blockHeading articlesPG__blockHeading--khaki onlyDesktop">Подкасты</h2>
+					<div class="search articlesPG__search onlyMobile">
+						<form class="search__form" action="#">
+							<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
+							<button class="search__submit" type="submit" aria-label="Найти"></button>
+						</form>
+					</div>
+					<div class="articlesList">
+						<div class="articlesList__list">
+							{% for i in videos %}
+								<div class="articlesList__item articlesList__item--video">
+									<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
+										<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+									</a>
+									<div class="articlesList__itemTitle">
+										<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
+									</div>
+									{% if i.desc %}
+										<div class="articlesList__desc">{{ i.desc }}</div>
+									{% endif %}
+									<div class="articlesList__date">{{ i.created }}</div>
+								</div>
+							{% endfor %}
+						</div>
+						<a class="btn btn--khaki btn--fullWidth articlesList__more" href="#">Загрузить ещё</a>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</article>
+	<script>
+		let tabBtns = document.querySelectorAll('.articlesPG__tab')
+
+		tabBtns.forEach((item) => {
+			item.addEventListener('click', () => {
+				document.querySelector('.articlesPG__tab--active')?.classList.remove('articlesPG__tab--active')
+				document.querySelector('.articlesPG__block--visibleOnMobile')?.classList.remove('articlesPG__block--visibleOnMobile')
+
+				item.classList.add('articlesPG__tab--active')
+				document.querySelector(`.articlesPG__block[data-target="${item.dataset.target}"]`)?.classList.add('articlesPG__block--visibleOnMobile')
+			})
+		})
+	</script>
+</main>
 {% endblock %}
