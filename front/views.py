@@ -1,5 +1,9 @@
 from django.views.generic import TemplateView, DetailView, ListView
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.utils.http import urlencode
 
 from front.models import Front, Diplom, Review, Page, Post, Service, Faq, Order
 
@@ -25,13 +29,81 @@ class AboutView(TemplateView):
 
 
 class ArticlesView(TemplateView):
-	template_name = 'articles.html'
+	template_name = "articles.html"
+	paginate_by = 9
 
-	def get_context_data(self, *args, **kwargs):
-		context = super().get_context_data(*args, **kwargs)
-		context['articles'] = Post.pub_objects.filter(type=Post.Type.ARTICLE)
-		context['videos'] = Post.pub_objects.filter(type=Post.Type.VIDEO)
-		return context
+	def _apply_search(self, qs, q: str):
+		if not q:
+			return qs
+		search_q = Q(title__icontains=q) | Q(desc__icontains=q)
+		return qs.filter(search_q)
+
+	def _paginate(self, qs, page_param: str):
+		paginator = Paginator(qs, self.paginate_by)
+		page_number = self.request.GET.get(page_param) or 1
+		return paginator.get_page(page_number)
+
+	def _build_next_url(self, page_obj, page_param: str, q: str | None):
+		if not page_obj.has_next():
+			return None
+
+		params = {page_param: page_obj.next_page_number()}
+		if q:
+			params["q"] = q
+
+		return f"{self.request.path}?{urlencode(params)}"
+
+	def get(self, request, *args, **kwargs):
+		q = (request.GET.get("q") or "").strip()
+
+		articles_qs = (
+			Post.pub_objects.filter(type=Post.Type.ARTICLE)
+			.order_by("-created")
+		)
+		videos_qs = (
+			Post.pub_objects.filter(type=Post.Type.VIDEO)
+			.order_by("-created")
+		)
+
+		articles_qs = self._apply_search(articles_qs, q)
+		videos_qs = self._apply_search(videos_qs, q)
+
+		articles_page = self._paginate(articles_qs, "page")
+		videos_page = self._paginate(videos_qs, "vpage")
+
+		if request.headers.get("x-requested-with") == "XMLHttpRequest":
+			target_list = request.GET.get("list", "articles")
+
+			if target_list == "videos":
+				page_obj = videos_page
+				html = render_to_string(
+					"includes/_post_cards.html",
+					{"page_obj": page_obj, "is_video": True},
+					request=request,
+				)
+				next_url = self._build_next_url(page_obj, "vpage", q)
+			else:
+				page_obj = articles_page
+				html = render_to_string(
+					"includes/_post_cards.html",
+					{"page_obj": page_obj, "is_video": False},
+					request=request,
+				)
+				next_url = self._build_next_url(page_obj, "page", q)
+
+			return JsonResponse({"html": html, "next_url": next_url})
+
+		context = self.get_context_data(**kwargs)
+		context.update(
+			{
+				"q": q,
+				"articles_page": articles_page,
+				"videos_page": videos_page,
+				"articles_next_url": self._build_next_url(articles_page, "page", q),
+				"videos_next_url": self._build_next_url(videos_page, "vpage", q),
+			}
+		)
+		return self.render_to_response(context)
 
 
 class ArticleView(DetailView):

@@ -1,0 +1,17 @@
+{% for i in page_obj %}
+	<div class="articlesList__item{% if is_video %} articlesList__item--video{% endif %}">
+		<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
+			<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+		</a>
+
+		<div class="articlesList__itemTitle">
+			<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
+		</div>
+
+		{% if i.desc %}
+			<div class="articlesList__desc">{{ i.desc }}</div>
+		{% endif %}
+
+		<div class="articlesList__date">{{ i.created }}</div>
+	</div>
+{% endfor %}

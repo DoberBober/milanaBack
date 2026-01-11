@@ -27,7 +27,7 @@
 			<h1 class="visually-hidden">Статьи и подкасты</h1>
 			<div class="articlesPG__tabs onlyMobile">
 				<button class="articlesPG__tab articlesPG__tab--badge articlesPG__tab--active" type="button" data-target="статьи">статьи</button>
-				{% if videos %}
+				{% if videos_page %}
 					<button class="articlesPG__tab articlesPG__tab--khaki" type="button" data-target="подкасты">подкасты</button>
 				{% endif %}
 			</div>
@@ -35,58 +35,44 @@
 				<h2 class="articlesPG__blockHeading onlyDesktop">Статьи</h2>
 				<div class="search articlesPG__search">
 					<form class="search__form" action="#">
-						<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
+						<input class="search__input" value="{{ q }}" name="q" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
 						<button class="search__submit" type="submit" aria-label="Найти"></button>
 					</form>
 				</div>
 				<div class="articlesList">
-					<div class="articlesList__list">
-						{% for i in articles %}
-							<div class="articlesList__item">
-								<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
-									<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
-								</a>
-								<div class="articlesList__itemTitle">
-									<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
-								</div>
-								{% if i.desc %}
-									<div class="articlesList__desc">{{ i.desc }}</div>
-								{% endif %}
-								<div class="articlesList__date">{{ i.created }}</div>
-							</div>
-						{% endfor %}
+					<div class="articlesList__list" id="articles-list">
+						{% include "includes/_post_cards.html" with page_obj=articles_page is_video=False %}
 					</div>
-					<a class="btn btn--beige btn--fullWidth articlesList__more" href="#">Загрузить ещё</a>
+					{% if articles_next_url %}
+						<a class="btn btn--beige btn--fullWidth articlesList__more js-load-more"
+							href="{{ articles_next_url }}"
+							data-list="articles">
+							Загрузить ещё
+						</a>
+					{% endif %}
 				</div>
 			</div>
 
-			{% if videos %}
+			{% if videos_page %}
 				<div class="articlesPG__block articlesPG__block--khaki" data-target="подкасты">
 					<h2 class="articlesPG__blockHeading articlesPG__blockHeading--khaki onlyDesktop">Подкасты</h2>
 					<div class="search articlesPG__search onlyMobile">
 						<form class="search__form" action="#">
-							<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
+							<input class="search__input" value="{{ q }}" name="q" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск статьи или подкаста">
 							<button class="search__submit" type="submit" aria-label="Найти"></button>
 						</form>
 					</div>
 					<div class="articlesList">
-						<div class="articlesList__list">
-							{% for i in videos %}
-								<div class="articlesList__item articlesList__item--video">
-									<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
-										<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
-									</a>
-									<div class="articlesList__itemTitle">
-										<a class="articlesList__itemTitleLink" href="{% url "article" slug=i.slug %}">{{ i.title }}</a>
-									</div>
-									{% if i.desc %}
-										<div class="articlesList__desc">{{ i.desc }}</div>
-									{% endif %}
-									<div class="articlesList__date">{{ i.created }}</div>
-								</div>
-							{% endfor %}
+						<div class="articlesList__list" id="videos-list">
+							{% include "includes/_post_cards.html" with page_obj=videos_page is_video=True %}
 						</div>
-						<a class="btn btn--khaki btn--fullWidth articlesList__more" href="#">Загрузить ещё</a>
+						{% if videos_next_url %}
+							<a class="btn btn--khaki btn--fullWidth articlesList__more js-load-more"
+								href="{{ videos_next_url }}"
+								data-list="videos">
+								Загрузить ещё
+							</a>
+						{% endif %}
 					</div>
 				</div>
 			{% endif %}
@@ -97,13 +83,53 @@
 
 		tabBtns.forEach((item) => {
 			item.addEventListener('click', () => {
-				document.querySelector('.articlesPG__tab--active')?.classList.remove('articlesPG__tab--active')
-				document.querySelector('.articlesPG__block--visibleOnMobile')?.classList.remove('articlesPG__block--visibleOnMobile')
+			document.querySelector('.articlesPG__tab--active')?.classList.remove('articlesPG__tab--active')
+			document.querySelector('.articlesPG__block--visibleOnMobile')?.classList.remove('articlesPG__block--visibleOnMobile')
 
-				item.classList.add('articlesPG__tab--active')
-				document.querySelector(`.articlesPG__block[data-target="${item.dataset.target}"]`)?.classList.add('articlesPG__block--visibleOnMobile')
+			item.classList.add('articlesPG__tab--active')
+			document.querySelector(`.articlesPG__block[data-target="${item.dataset.target}"]`)?.classList.add('articlesPG__block--visibleOnMobile')
 			})
 		})
+
+		document.addEventListener('click', async (e) => {
+			const btn = e.target.closest('.js-load-more');
+			if (!btn) return;
+
+			e.preventDefault();
+
+			const listName = btn.dataset.list;
+			const listContainer = btn.closest('.articlesList')?.querySelector('.articlesList__list');
+			if (!listContainer) return;
+
+			try {
+				btn.classList.add('btn--loading');
+
+				const url = new URL(btn.href, window.location.origin);
+				url.searchParams.set('list', listName);
+
+				const resp = await fetch(url.toString(), {
+					headers: { 'X-Requested-With': 'XMLHttpRequest' }
+				});
+
+				if (!resp.ok) throw new Error('Bad response: ' + resp.status);
+
+				const data = await resp.json();
+
+				if (data.html) {
+					listContainer.insertAdjacentHTML('beforeend', data.html);
+				}
+
+				if (data.next_url) {
+					btn.href = data.next_url;
+				} else {
+					btn.remove();
+				}
+			} catch (err) {
+				window.location.href = btn.href;
+			} finally {
+				btn.classList.remove('btn--loading');
+			}
+		});
 	</script>
 </main>
 {% endblock %}
