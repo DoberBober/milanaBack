@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView, DetailView, ListView
+from django.db.models import Q
 
 from front.models import Front, Diplom, Review, Page, Post, Service, Faq, Order
 
@@ -60,10 +61,14 @@ class PageView(DetailView):
 	context_object_name = 'page'
 
 
-class ServicesView(ListView):
+class ServicesView(TemplateView):
 	template_name = 'services.html'
-	context_object_name = "services"
-	queryset = Service.objects.all()
+
+	def get_context_data(self, *args, **kwargs):
+		context = super().get_context_data(*args, **kwargs)
+		context['services'] = Service.pub_objects.filter(Q(type=Service.Type.SERVICE) & Q(parent__isnull=True))
+		context['operations'] = Service.pub_objects.filter(Q(type=Service.Type.OPERATION) & Q(parent__isnull=True))
+		return context
 
 
 class ServiceView(DetailView):

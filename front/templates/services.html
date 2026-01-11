@@ -21,5 +21,204 @@
 {% endblock %}
 
 {% block content %}
+<main>
+	<article class="servicesPG">
+		<div class="container servicesPG__container">
+			<h1 class="visually-hidden">Услуги и операции</h1>
+			<div class="servicesPG__tabs onlyMobile">
+				<button class="servicesPG__tab servicesPG__tab--badge servicesPG__tab--active" type="button" data-target="услуги">услуги</button>
+				{% if operations %}
+					<button class="servicesPG__tab servicesPG__tab--khaki" type="button" data-target="операции">операции</button>
+				{% endif %}
+			</div>
+			<div class="servicesPG__block servicesPG__block--visibleOnMobile" data-target="услуги">
+				<h2 class="servicesPG__blockHeading onlyDesktop">услуги</h2>
+				<div class="search servicesPG__search">
+					<div class="search__form">
+						<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск услуг или операций">
+						<div class="search__submit"></div>
+					</div>
+				</div>
+				<div class="servicesCategories">
+					<div class="servicesCategories__categories">
+						{% for i in services %}
+							<div class="servicesCategories__category {% if i.favorite %} servicesCategories__category--selected{% endif %}">
+								{% if not i.empty %}
+									<a class="servicesCategories__categoryTitle" href="{% url "service" slug=i.slug %}">{{ i.title }}</a>
+								{% else %}
+									<div class="servicesCategories__categoryTitle">{{ i.title }}</div>
+								{% endif %}
+								{% if i.childs %}
+									<div class="servicesCategories__categoryServices">
+										{% for j in i.childs.all %}
+											{% if not j.empty %}
+												<a class="servicesCategories__categoryService" href="{% url "service" slug=j.slug %}">{{ j.title }}</a>
+											{% else %}
+												<div class="servicesCategories__categoryService">{{ j.title }}</div>
+											{% endif %}
+										{% endfor %}
+									</div>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
 
+			{% if operations %}
+				<div class="servicesPG__block servicesPG__block--khaki" data-target="операции">
+					<h2 class="servicesPG__blockHeading onlyDesktop">операции</h2>
+					<div class="search servicesPG__search onlyMobile">
+						<div class="search__form">
+							<input class="search__input" type="search" aria-label="Введите поисковый запрос" placeholder="Поиск услуг или операций">
+							<div class="search__submit"></div>
+						</div>
+					</div>
+					<div class="servicesCategories">
+						<div class="servicesCategories__categories">
+							{% for i in operations %}
+								<div class="servicesCategories__category {% if i.favorite %} servicesCategories__category--selected{% endif %}">
+									{% if not i.empty %}
+										<a class="servicesCategories__categoryTitle" href="{% url "service" slug=i.slug %}">{{ i.title }}</a>
+									{% else %}
+										<div class="servicesCategories__categoryTitle">{{ i.title }}</div>
+									{% endif %}
+									{% if i.childs %}
+										<div class="servicesCategories__categoryServices">
+											{% for j in i.childs.all %}
+												{% if not j.empty %}
+													<a class="servicesCategories__categoryService" href="{% url "service" slug=j.slug %}">{{ j.title }}</a>
+												{% else %}
+													<div class="servicesCategories__categoryService">{{ j.title }}</div>
+												{% endif %}
+											{% endfor %}
+										</div>
+									{% endif %}
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyMobile" href="#">Записаться на консультацию</a>
+			<a class="btn btn--khaki btn--right floatBtn showOrderModal onlyDesktop" href="#">Запись</a>
+		</div>
+	</article>
+	<script>
+		let tabBtns = document.querySelectorAll('.servicesPG__tab')
+
+		tabBtns.forEach((item) => {
+			item.addEventListener('click', () => {
+				document.querySelector('.servicesPG__tab--active')?.classList.remove('servicesPG__tab--active')
+				document.querySelector('.servicesPG__block--visibleOnMobile')?.classList.remove('servicesPG__block--visibleOnMobile')
+
+				item.classList.add('servicesPG__tab--active')
+				document.querySelector(`.servicesPG__block[data-target="${item.dataset.target}"]`)?.classList.add('servicesPG__block--visibleOnMobile')
+			})
+		})
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const blocks = Array.from(document.querySelectorAll('.servicesPG__block'));
+			if (blocks.length === 0) return;
+
+			const inputs = blocks
+				.map((b) => b.querySelector('.search__input'))
+				.filter(Boolean);
+
+			const categories = blocks.flatMap((b) =>
+				Array.from(b.querySelectorAll('.servicesCategories__category'))
+			);
+
+			if (inputs.length === 0 || categories.length === 0) return;
+
+			const normalize = (str) =>
+				(str ?? '')
+				.toString()
+				.toLowerCase()
+				.replace(/ё/g, 'е')
+				.replace(/\s+/g, ' ')
+				.trim();
+
+			const show = (el) => el.classList.remove('hidden');
+			const hide = (el) => el.classList.add('hidden');
+
+			const reset = () => {
+				categories.forEach((cat) => {
+					show(cat);
+					cat.querySelectorAll('.servicesCategories__categoryService').forEach(show);
+				});
+			};
+
+			const applyFilter = (queryRaw) => {
+				const query = normalize(queryRaw);
+
+				if (!query) {
+					reset();
+					return;
+				}
+
+				categories.forEach((cat) => {
+					const titleEl = cat.querySelector('.servicesCategories__categoryTitle');
+					const titleText = normalize(titleEl?.textContent);
+
+					const servicesWrap = cat.querySelector('.servicesCategories__categoryServices');
+					const services = servicesWrap ?
+						Array.from(servicesWrap.querySelectorAll('.servicesCategories__categoryService')) :
+						[];
+
+					const categoryMatches = titleText.includes(query);
+					let anyServiceMatches = false;
+
+					services.forEach((svc) => {
+						const svcText = normalize(svc.textContent);
+						const svcMatches = svcText.includes(query);
+
+						if (svcMatches) {
+							show(svc);
+							anyServiceMatches = true;
+						} else {
+							hide(svc);
+						}
+					});
+
+					if (categoryMatches) {
+						show(cat);
+						services.forEach(show);
+					} else if (anyServiceMatches) {
+						show(cat);
+					} else {
+						hide(cat);
+					}
+				});
+			};
+
+			const debounce = (fn, ms = 150) => {
+				let t;
+				return (...args) => {
+					clearTimeout(t);
+					t = setTimeout(() => fn(...args), ms);
+				};
+			};
+
+			const onAnyInput = debounce((e) => {
+				const value = e.target.value;
+
+				inputs.forEach((inp) => {
+					if (inp !== e.target && inp.value !== value) inp.value = value;
+				});
+
+				applyFilter(value);
+			}, 150);
+
+			inputs.forEach((inp) => inp.addEventListener('input', onAnyInput));
+
+			const initialValue = inputs.find((i) => normalize(i.value))?.value || '';
+			if (initialValue) {
+				inputs.forEach((inp) => (inp.value = initialValue));
+			}
+			applyFilter(initialValue);
+		});
+	</script>
+</main>
 {% endblock %}
