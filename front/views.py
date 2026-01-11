@@ -115,7 +115,7 @@ class ArticleView(DetailView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		context['other'] = Post.pub_objects.filter(type=self.object.type).order_by('?')[:6]
+		context['other'] = Post.pub_objects.filter(type=self.object.type).exclude(id=self.object.id).order_by('?')[:6]
 		return context
 
 
@@ -156,7 +156,7 @@ class ServiceView(DetailView):
 
 	def get_context_data(self, *args, **kwargs):
 		context = super().get_context_data(*args, **kwargs)
-		context['other'] = Service.objects.filter(show_on_front=True).order_by('?')[:6]
+		context['other'] = Service.objects.filter(show_on_front=True).exclude(id=self.object.id).order_by('?')[:6]
 		return context
 
 
