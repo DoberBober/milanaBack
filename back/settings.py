@@ -34,9 +34,6 @@ IS_DEV = env.bool("DEV", default=False)
 ALLOWED_HOSTS = ['*']
 
 
-#
-EMAIL_ADMIN = env.str('EMAIL_ADMIN')
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -171,11 +168,12 @@ else:
 
 EMAIL_HOST = "smtp.beget.com"
 EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_ADMIN = env.str('EMAIL_ADMIN')
 EMAIL_HOST_USER = env.str('EMAIL_SITE_EMAIL')
 DEFAULT_FROM_EMAIL = env.str('EMAIL_SITE_EMAIL')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_SITE_PASSWORD')
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
