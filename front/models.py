@@ -29,6 +29,9 @@ class Front(models.Model):
 
 	phone = models.CharField(blank=True, default='', max_length=256, verbose_name='Телефон')
 	email = models.CharField(blank=True, default='', max_length=256, verbose_name='Почта')
+	address_link = models.CharField(blank=True, default='', max_length=256, verbose_name='Ссылка на карту')
+	address = models.CharField(blank=True, default='', max_length=256, verbose_name='Адрес')
+	address_note = models.CharField(blank=True, default='', max_length=256, verbose_name='Сноска под адресом')
 
 	vk = models.CharField(blank=True, default='', max_length=256, verbose_name='Вконтакте')
 	wa = models.CharField(blank=True, default='', max_length=256, verbose_name='Whatsapp')
@@ -39,9 +42,8 @@ class Front(models.Model):
 	front_heading = models.CharField(blank=False, default='', max_length=256, verbose_name='Заголовок на главной')
 	front_desc = models.CharField(blank=False, default='', max_length=256, verbose_name='Вводный текст на главной')
 
+	work_start_year = models.PositiveIntegerField(verbose_name='Год, с которого начал отсчитываться стаж', blank=False, default=2000)
 	about_desc = tinymce_models.HTMLField(verbose_name='Текст в блоке "О враче"')
-	point_1 = models.CharField(blank=True, default='', max_length=256, verbose_name='Пункт 1 в блоке "О враче"', help_text='Для выделения большими - тег b')
-	point_2 = models.CharField(blank=True, default='', max_length=256, verbose_name='Пункт 2 в блоке "О враче"', help_text='Для выделения большими - тег b')
 
 	about_heading = models.CharField(blank=False, default='', max_length=256, verbose_name='Заголовок на странице "О враче"')
 	about_text = tinymce_models.HTMLField(verbose_name='Текст на странице "О враче"')
@@ -120,7 +122,7 @@ class Post(BaseModel):
 	slug = models.SlugField(max_length=255, unique=True, verbose_name='URL')
 	desc = models.TextField(blank=True, verbose_name='Вводный текст')
 	text = tinymce_models.HTMLField(verbose_name='Текст')
-	thumbnail = models.ImageField(upload_to='posts/', blank=False, verbose_name='Картинка в списке', help_text="760x480")
+	thumbnail = models.ImageField(upload_to='posts/', blank=True, verbose_name='Картинка в списке', help_text="760x480")
 	video = models.TextField(blank=True, verbose_name='Видео')
 	photo = models.ImageField(upload_to='posts/', blank=True, verbose_name='Картинка в статье', help_text="2360x800")
 

@@ -27,7 +27,6 @@
 			<div class="container article__container">
 				<a class="article__back" href="{% url "services" %}">все услуги</a>
 				<h1 class="article__title shortBlock">{{ service.title }}</h1>
-				<div class="article__date">{{ service.created }}</div>
 				{% if service.photo and service.photo.url %}
 					<img class="article__img" src="{{ service.photo.url }}" alt="{{ service.title }}">
 				{% endif %}

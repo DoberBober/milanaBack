@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% load static %}
+{% load get_years_diff %}
 
 {% block meta %}
 	{% if front.about_seo_title %}
@@ -29,21 +30,17 @@
 					<img src="{{ front.photo.url }}" alt="">
 					<div class="about__heading">Ахмедова Милана Ниматулаховна</div>
 					<div class="about__desc">гинеколог-хирург, акушер-гинеколог, гинеколог-эндокринолог, кольпоскопист,&nbsp;врач УЗД</div>
-					{% if front.point_1 or front.point_2 %}
+					{% if front.work_start_year or reviews_count %}
 						<div class="labels about__labels">
 							<div class="labels__labels">
-								{% if front.point_1 %}
+								{% if front.work_start_year %}
 									<div class="labels__label">
-										{% autoescape off %}
-											{{ front.point_1 }}
-										{% endautoescape %}
+										<p><b>{{ front.work_start_year | get_years_diff }} лет</b></p>опыт&nbsp;работы
 									</div>
 								{% endif %}
-								{% if front.point_2 %}
+								{% if reviews_count %}
 									<div class="labels__label">
-										{% autoescape off %}
-											{{ front.point_2 }}
-										{% endautoescape %}
+										<p><b>{{ reviews_count }}</b></p>отзывов
 									</div>
 								{% endif %}
 							</div>

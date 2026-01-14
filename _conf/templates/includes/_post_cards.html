@@ -1,7 +1,13 @@
+{% load static %}
+
 {% for i in page_obj %}
 	<div class="articlesList__item{% if is_video %} articlesList__item--video{% endif %}">
 		<a class="articlesList__itemImgLink" href="{% url "article" slug=i.slug %}">
-			<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+			{% if i.thumbnail %}
+				<img class="articlesList__itemImg" src="{{ i.thumbnail.url }}" alt="{{ i.title }}">
+			{% else %}
+				<img style="object-fit: contain;" class="articlesList__itemImg" src="{% static 'assets/logo.svg' %}" alt="{{ i.title }}">
+			{% endif %}
 		</a>
 
 		<div class="articlesList__itemTitle">
@@ -12,6 +18,6 @@
 			<div class="articlesList__desc">{{ i.desc }}</div>
 		{% endif %}
 
-		<div class="articlesList__date">{{ i.created }}</div>
+		<div class="articlesList__date">{{ i.created|date }}</div>
 	</div>
 {% endfor %}

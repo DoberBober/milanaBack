@@ -26,6 +26,9 @@ class FrontAdmin(admin.ModelAdmin):
 		('Контактные данные', {
 			'fields': (
 				('phone', 'email',),
+				'address_link',
+				'address',
+				'address_note',
 				'vk',
 				'wa',
 				'tg',
@@ -36,10 +39,10 @@ class FrontAdmin(admin.ModelAdmin):
 			'fields': (
 				('front_heading', 'front_desc',),
 				'photo',
+				'work_start_year',
 				'about_desc',
 				'about_heading',
 				'about_text',
-				('point_1', 'point_2',),
 			)
 		}),
 	)

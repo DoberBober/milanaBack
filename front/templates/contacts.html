@@ -28,14 +28,24 @@
 			<h1 class="pageH1 contactsPG__h1">Контакты</h1>
 			<div class="contacts contactsPG__contacts">
 				<div class="contacts__list">
-					<div class="contacts__block">
-						<a class="contacts__blockContact" href="{{ front.phone|get_phone_link }}">{{ front.phone }}</a>
-						<div class="contacts__blockContactNote">запись и консультация</div>
-					</div>
+					{% if front.phone %}
+						<div class="contacts__block">
+							<a class="contacts__blockContact" href="{{ front.phone|get_phone_link }}">{{ front.phone }}</a>
+							<div class="contacts__blockContactNote">запись и консультация</div>
+						</div>
+					{% endif %}
 					{% if front.email %}
 						<div class="contacts__block">
 							<a class="contacts__blockContact" href="mailto:{{ front.email }}">{{ front.email }}</a>
 							<div class="contacts__blockContactNote">отзывы и предложения</div>
+						</div>
+					{% endif %}
+					{% if front.address %}
+						<div class="contacts__block">
+							<a target="_blank" class="contacts__blockContact" href="{{ front.address_link }}">{{ front.address }}</a>
+							{% if front.address_note %}
+								<div class="contacts__blockContactNote">{{ front.address_note }}</div>
+							{% endif %}
 						</div>
 					{% endif %}
 					<div class="contacts__block">
