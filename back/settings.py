@@ -167,9 +167,9 @@ else:
 	EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "smtp.beget.com"
-EMAIL_PORT = 465
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_USE_SSL = False
 EMAIL_ADMIN = env.str('EMAIL_ADMIN')
 EMAIL_HOST_USER = env.str('EMAIL_SITE_EMAIL')
 DEFAULT_FROM_EMAIL = env.str('EMAIL_SITE_EMAIL')
