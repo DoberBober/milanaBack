@@ -25,6 +25,7 @@ class FrontAdmin(admin.ModelAdmin):
 		}),
 		('Контактные данные', {
 			'fields': (
+				('order_link', 'order_modal',),
 				('phone', 'email',),
 				'address_link',
 				'address',

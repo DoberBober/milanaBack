@@ -12,7 +12,7 @@
 					<a href="{{ front.phone|get_phone_link }}">{{ front.phone }}</a>
 					<span>запись и консультация</span>
 				</div>
-				<a class="header__schedule showOrderModal onlyDesktop" href="#">Запись на приём </a>
+				<a class="header__schedule onlyDesktop{% if front.order_modal %} showOrderModal{% endif %}" href="{{ front.order_link }}" target="_blank">Запись на приём </a>
 				<button class="header__button header__button--burger onlyMobile" type="button">
 					<svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M8.25391 18.0075H27.7615" stroke="#999D8F" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"></path>

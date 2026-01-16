@@ -105,7 +105,7 @@
 						</div>
 					</div>
 					<div class="contacts__block">
-						<a class="btn btn--fullWidth btn--beige showOrderModal" href="#">Записаться на приём</a>
+						<a class="btn btn--fullWidth btn--beige{% if front.order_modal %} showOrderModal{% endif %}" href="{{ front.order_link }}" target="_blank">Записаться на приём</a>
 					</div>
 				</div>
 			</div>

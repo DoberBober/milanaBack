@@ -33,6 +33,8 @@ class Front(models.Model):
 	address = models.CharField(blank=True, default='', max_length=256, verbose_name='Адрес')
 	address_note = models.CharField(blank=True, default='', max_length=256, verbose_name='Сноска под адресом')
 
+	order_link = models.CharField(blank=False, default='#', max_length=256, verbose_name='Ссылка на запись')
+	order_modal = models.BooleanField(default=True, verbose_name='Использовать модалку для записи')
 	vk = models.CharField(blank=True, default='', max_length=256, verbose_name='Вконтакте')
 	wa = models.CharField(blank=True, default='', max_length=256, verbose_name='Whatsapp')
 	tg = models.CharField(blank=True, default='', max_length=256, verbose_name='Telegram')

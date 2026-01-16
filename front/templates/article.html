@@ -52,7 +52,7 @@
 					</div>
 				{% endif %}
 
-				<a class="btn btn--khaki btn--fullWidth article__btn showOrderModal" href="#">Записаться на консультацию</a>
+				<a class="btn btn--khaki btn--fullWidth article__btn{% if front.order_modal %} showOrderModal{% endif %}" href="{{ front.order_link }}" target="_blank">Записаться на консультацию</a>
 			</div>
 		</div>
 

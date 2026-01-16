@@ -35,7 +35,8 @@
 				<div class="container about__container">
 					<img src="{{ front.photo.url }}" alt="">
 					<h1 class="about__heading">Ахмедова Милана Ниматулаховна</h1>
-					<div class="about__desc">гинеколог-хирург, акушер-гинеколог, гинеколог-эндокринолог, кольпоскопист, врач УЗД</div><a class="btn btn--badge about__btn showOrderModal" href="#">Консультация</a>
+					<div class="about__desc">гинеколог-хирург, акушер-гинеколог, гинеколог-эндокринолог, кольпоскопист, врач УЗД</div>
+					<a class="btn btn--badge about__btn{% if front.order_modal %} showOrderModal{% endif %}" href="{{ front.order_link }}" target="_blank">Консультация</a>
 				</div>
 			</div>
 		</div>
