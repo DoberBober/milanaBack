@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 # Create your views here.
 @csrf_exempt
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def upload_tinymce(request):
 	if request.method != "POST":
 		return JsonResponse({'Error Message': "Wrong request"})
