@@ -190,3 +190,30 @@ def create_order(request):
 	mail_sender(subject, message)
 
 	return JsonResponse({"ok": 1})
+
+
+class SitemapHTML(TemplateView):
+	template_name = 'sitemap.html'
+	context_object_name = "sitemap"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['services'] = Service.pub_objects.filter(empty=False)
+		context['posts'] = Post.pub_objects.all()
+		context['pages'] = Page.objects.all()
+
+		return context
+
+
+class SitemapXML(TemplateView):
+	template_name = 'sitemap.xml'
+	content_type = 'text/xml'
+	context_object_name = "sitemap"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['services'] = Service.pub_objects.filter(empty=False)
+		context['posts'] = Post.pub_objects.all()
+		context['pages'] = Page.objects.all()
+
+		return context

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>https://dr-ahmedova.ru/</loc>
+	</url>
+	<url>
+		<loc>https://dr-ahmedova.ru{% url 'about' %}</loc>
+	</url>
+	<url>
+		<loc>https://dr-ahmedova.ru{% url 'services' %}</loc>
+	</url>
+	<url>
+		<loc>https://dr-ahmedova.ru{% url 'articles' %}</loc>
+	</url>
+	<url>
+		<loc>https://dr-ahmedova.ru{% url 'reviews' %}</loc>
+	</url>
+	<url>
+		<loc>https://dr-ahmedova.ru{% url 'contacts' %}</loc>
+	</url>
+
+	{% for i in services %}
+		<url>
+			<loc>https://dr-ahmedova.ru{% url 'service' slug=i.slug %}</loc>
+		</url>
+	{% endfor %}
+
+	{% for i in posts %}
+		<url>
+			<loc>https://dr-ahmedova.ru{% url 'article' slug=i.slug %}</loc>
+		</url>
+	{% endfor %}
+
+	{% for i in pages %}
+		<url>
+			<loc>https://dr-ahmedova.ru{% url 'page' slug=i.slug %}</loc>
+		</url>
+	{% endfor %}
+</urlset>
