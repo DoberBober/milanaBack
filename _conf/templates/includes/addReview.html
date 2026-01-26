@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="addReview">
+	<form class="addReview__form" action="{% url "add_review" %}" method="POST">
+		{% csrf_token %}
+		<div class="addReview__heading">оставьте отзыв</div>
+		<div class="addReview__body">
+			<input type="checkbox" name="human" aria-label="Вы робот?" class="visually-hidden">
+			<div class="addReview__inputBlock">
+				<label class="addReview__label" for="name">Ваше имя</label>
+				<input class="addReview__input" type="text" name="name" id="name">
+			</div>
+			<div class="addReview__inputBlock">
+				<label class="addReview__label" for="email">E-mail</label>
+				<input class="addReview__input" type="email" name="email" id="email">
+			</div>
+			<div class="addReview__inputBlock">
+				<label class="addReview__label" for="review">Текст отзыва</label>
+				<textarea class="addReview__input addReview__input--textarea" name="review" id="review"></textarea>
+			</div>
+			<button class="btn btn--khaki btn--fullWidthAnywere addReview__submit" type="submit">Отправить</button>
+			<div class="addReview__note">
+				<p>Нажимая на кнопку вы соглашаетесь <a href="{% url "page" slug="politics" %}">с политикой обработки данных</a></p>
+			</div>
+		</div>
+
+		<div class="addReview__success">Мы опубликуем отзыв после проверки. Спасибо!</div>
+	</form>
+</div>

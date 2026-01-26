@@ -76,8 +76,10 @@ class Diplom(models.Model):
 
 
 class Review(models.Model):
+	public = models.BooleanField(default=False, verbose_name='Публикация')
 	show_on_front = models.BooleanField(default=True, verbose_name='Отображать на главной')
 	title = models.CharField(blank=False, max_length=256, verbose_name='Имя')
+	email = models.CharField(blank=False, max_length=256, verbose_name='Email')
 	text = models.TextField(blank=True, verbose_name='Текст отзыва')
 
 

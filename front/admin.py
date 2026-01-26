@@ -70,11 +70,13 @@ class DiplomAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-	list_display = ['title', 'show_on_front',]
+	list_display = ['title', 'show_on_front', 'public',]
 
 	fields = (
+		'public',
 		'show_on_front',
 		'title',
+		'email',
 		'text',
 	)
 
