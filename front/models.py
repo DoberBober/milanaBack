@@ -87,6 +87,7 @@ class Review(models.Model):
 		db_table = 'reviews'
 		verbose_name = 'Отзыв'
 		verbose_name_plural = 'Отзывы'
+		ordering = ('-id',)
 
 	def __str__(self):
 		return self.title

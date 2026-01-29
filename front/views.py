@@ -222,19 +222,19 @@ class SitemapXML(TemplateView):
 @require_POST
 def add_review(request):
 	name = (request.POST.get("name") or "").strip()
-	email = (request.POST.get("email") or "").strip()
+	tel = (request.POST.get("tel") or "").strip()
 	review = (request.POST.get("review") or "").strip()
 	not_human = (request.POST.get("human") or "").strip()
 
 	if not_human:
 		return JsonResponse({"ok": 1})
 
-	if not name or not email or not review:
+	if not name or not tel or not review:
 		return JsonResponse({"ok": 0, "error": "name/phone required"}, status=400)
 
 	order = Review.objects.create(
 		title=name,
-		email=email,
+		email=tel,
 		text=review,
 		public=False,
 		show_on_front=False,
